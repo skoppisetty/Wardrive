@@ -38,7 +38,6 @@ public class HomeFragment extends Fragment {
 					e.printStackTrace();
 				}
             	Context context = getActivity().getApplicationContext();
-            	CharSequence text = "Hello toast!";
             	int duration = Toast.LENGTH_SHORT;
 
             	Toast toast = Toast.makeText(context, refresh(), duration);
@@ -66,6 +65,9 @@ private String refresh(){
     String networkCountry = tm.getNetworkCountryIso();
     String networkOperatorId = tm.getNetworkOperator();
     String networkName = tm.getNetworkOperatorName();
+    
+    String networkType = networkType();
+    
     
             int cell_ID = CellLocation.getCid();
             int cell_psc= CellLocation.getPsc();
@@ -113,6 +115,7 @@ private String refresh(){
     info+="\n cell_ID :"+cell_ID; 
     info+="\n cell_psc :"+cell_psc; 
     info+="\n cell_lac :"+cell_lac; 
+    info+="\n network Type :" + networkType;
     
     List<NeighboringCellInfo> neighboringCellInfos = tm.getNeighboringCellInfo();
     for(NeighboringCellInfo neighboringCellInfo : neighboringCellInfos)
@@ -128,6 +131,31 @@ private String refresh(){
     }  
    
 	return info;
+}
+
+private String networkType() {
+    TelephonyManager teleMan = (TelephonyManager)
+    		getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+    int networkType = teleMan.getNetworkType();
+    switch (networkType) {
+        case TelephonyManager.NETWORK_TYPE_1xRTT: return "1xRTT";
+        case TelephonyManager.NETWORK_TYPE_CDMA: return "CDMA";
+        case TelephonyManager.NETWORK_TYPE_EDGE: return "EDGE";
+        case TelephonyManager.NETWORK_TYPE_EHRPD: return "eHRPD";
+        case TelephonyManager.NETWORK_TYPE_EVDO_0: return "EVDO rev. 0";
+        case TelephonyManager.NETWORK_TYPE_EVDO_A: return "EVDO rev. A";
+        case TelephonyManager.NETWORK_TYPE_EVDO_B: return "EVDO rev. B";
+        case TelephonyManager.NETWORK_TYPE_GPRS: return "GPRS";
+        case TelephonyManager.NETWORK_TYPE_HSDPA: return "HSDPA";
+        case TelephonyManager.NETWORK_TYPE_HSPA: return "HSPA";
+        case TelephonyManager.NETWORK_TYPE_HSPAP: return "HSPA+";
+        case TelephonyManager.NETWORK_TYPE_HSUPA: return "HSUPA";
+        case TelephonyManager.NETWORK_TYPE_IDEN: return "iDen";
+        case TelephonyManager.NETWORK_TYPE_LTE: return "LTE";
+        case TelephonyManager.NETWORK_TYPE_UMTS: return "UMTS";
+        case TelephonyManager.NETWORK_TYPE_UNKNOWN: return "Unknown";
+    }
+    throw new RuntimeException("New type of network");
 }
 
 }
