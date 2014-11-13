@@ -1,5 +1,6 @@
 package com.wardrive;
 
+import com.wardrive.adapter.GatherStats;
 import com.wardrive.adapter.Stats;
 import com.wardrive.adapter.StatsDataSource;
 
@@ -24,14 +25,12 @@ public class Savedbservice extends Service {
 	
 	@Override
     public void onCreate() {
- 
-        Toast.makeText(this, "Congrats! MyService Created", Toast.LENGTH_LONG).show();
-        
+
     }
  
     @Override
     public void onStart(Intent intent, int startId) {
-        Toast.makeText(this, "My Service Started", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Daemon Started", Toast.LENGTH_LONG).show();
         phoneStateSetup(this);
     	
           
@@ -39,19 +38,11 @@ public class Savedbservice extends Service {
  
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "MyService Stopped", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Daemon Stopped", Toast.LENGTH_LONG).show();
         
     }
 
-	private Boolean save_data(Stats data) {
-		// TODO Auto-generated method stub
-		StatsDataSource datasource;
-	    datasource = new StatsDataSource(this);
-	    datasource.open(); 
-	    Boolean status = datasource.saveStats(data);
-	    datasource.close(); 
-	    return status;
-	}
+
 	
   
 	private void phoneStateSetup(final Context context){
@@ -60,9 +51,8 @@ public class Savedbservice extends Service {
     	            .getSystemService(Context.TELEPHONY_SERVICE);
 		 myPhoneStateListener = new PhoneStateListener() {
 		 public void onCellLocationChanged(CellLocation location){
-			Stats data = new Stats();
-			data = data.gen_data(context);
-			Boolean status = save_data(data);
+			Stats data = GatherStats.gen_data(context);
+			Boolean status = GatherStats.save_data(context,data);
         	if(status){
         		Toast.makeText(context, "Successfully saved to database" , 
         				   Toast.LENGTH_LONG).show();
