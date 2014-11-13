@@ -16,7 +16,8 @@ import android.view.View;
 import android.widget.Toast;
 
 public class Savedbservice extends Service {
-
+	PhoneStateListener myPhoneStateListener;
+	TelephonyManager ttm;
 	@Override
 	public IBinder onBind(Intent arg0) {
 		// TODO Auto-generated method stub
@@ -39,16 +40,19 @@ public class Savedbservice extends Service {
     @Override
     public void onDestroy() {
         Toast.makeText(this, "Daemon Stopped", Toast.LENGTH_LONG).show();
-        
+        try{
+        	 if(myPhoneStateListener != null){ttm.listen(myPhoneStateListener, PhoneStateListener.LISTEN_NONE);}
+        	}catch(Exception e){
+        	 e.printStackTrace();
+        }
     }
 
 
 	
   
 	private void phoneStateSetup(final Context context){
-    	 PhoneStateListener myPhoneStateListener;
-    	 TelephonyManager ttm = (TelephonyManager) context
-    	            .getSystemService(Context.TELEPHONY_SERVICE);
+		 ttm = (TelephonyManager) context
+	            .getSystemService(Context.TELEPHONY_SERVICE);
 		 myPhoneStateListener = new PhoneStateListener() {
 		 public void onCellLocationChanged(CellLocation location){
 			Stats data = GatherStats.gen_data(context);

@@ -42,11 +42,13 @@ public class HomeFragment extends Fragment {
             	Stats data = GatherStats.gen_data(thiscontext);
             	load_data(data,rootView);
             	getActivity().startService(new Intent(thiscontext, Savedbservice.class));
+            	setdaemonstatus(rootView);
             }
         });
 		stop_saving.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
             	getActivity().stopService(new Intent(thiscontext, Savedbservice.class));
+            	setdaemonstatus(rootView);
             }
         });
         phoneStateSetup(rootView);
@@ -70,6 +72,7 @@ public class HomeFragment extends Fragment {
 		TextView rssi = (TextView)rootView.findViewById(R.id.rssi_value);
 		TextView timestamp_view = (TextView)rootView.findViewById(R.id.timestamp_value);
 		
+		
 		IMEI.setText(data.getImei());
 		IMSI.setText(data.getImsi());
 		Phone_model.setText(data.getPhone_model());
@@ -85,7 +88,7 @@ public class HomeFragment extends Fragment {
 		if(data.getRssi()!= null){
 			rssi.setText(data.getRssi()+"db");
 		}
-		
+		setdaemonstatus(rootView);
 		timestamp_view.setText(data.getTimestamp());
 		
 	}
@@ -102,6 +105,7 @@ public class HomeFragment extends Fragment {
 			 Stats data = GatherStats.gen_data(thiscontext);
 			 data.setRssi(String.valueOf(rssi));
 			 load_data(data,rootView);
+			 
 		 }
 		 };
 
@@ -111,5 +115,15 @@ public class HomeFragment extends Fragment {
 
 		 }
 		}
+	private void setdaemonstatus(final View rootView){
+		TextView daemon = (TextView)rootView.findViewById(R.id.daemon_value);
+		if(GatherStats.isMyServiceRunning(thiscontext,Savedbservice.class)){
+			daemon.setText("Running");
+		}
+		else{
+			daemon.setText("Not Running");
+		}
+		
+	}
 
 }
