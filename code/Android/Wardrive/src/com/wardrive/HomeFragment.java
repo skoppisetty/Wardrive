@@ -3,6 +3,7 @@ package com.wardrive;
 import com.wardrive.adapter.Stats;
 import com.wardrive.adapter.StatsDataSource;
 import com.wardrive.adapter.GatherStats;
+//import com.wardrive.adapter.Toast;
 
 import android.support.v4.app.Fragment;
 import android.telephony.CellLocation;
@@ -17,13 +18,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 
-
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment
+implements LocationListener
+{
 	private StatsDataSource datasource;
 	private Context thiscontext;
 	PhoneStateListener myPhoneStateListener;
 	TelephonyManager ttm;
+	static LocationManager lm;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -132,4 +138,63 @@ public class HomeFragment extends Fragment {
 		
 	}
 
+	
+	@Override
+    public void onLocationChanged(Location loc) { }
+
+  
+    //@Override
+    public void onProviderDisabled(String provider) { }
+
+
+    //@Override
+    public void onProviderEnabled(String provider) { }
+
+
+    //@Override
+    public void onStatusChanged(String provider, int status, Bundle extras) { }
+
+    
+    public static LocationListener locationListenerGps = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            //timer.cancel();
+            //double x =location.getLatitude();
+            //double y = location.getLongitude();
+            lm.removeUpdates(this);
+            lm.removeUpdates(locationListenerNetwork);
+
+            //Context context = getApplicationContext();
+            //int duration = Toast.LENGTH_SHORT;
+            //Toast toast = Toast.makeText(context, "gps enabled "+x + "\n" + y, duration);
+            //toast.show();
+        }
+
+        public void onProviderDisabled(String provider) { }
+
+        public void onProviderEnabled(String provider) { }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) { }
+    };
+
+    public static LocationListener locationListenerNetwork = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            //timer.cancel();
+            //double x = location.getLatitude();
+            //double y = location.getLongitude();
+            lm.removeUpdates(this);
+            lm.removeUpdates(locationListenerGps);
+
+            //int duration = Toast.LENGTH_SHORT;
+            //Toast toast = Toast.makeText(thiscontext, "network enabled"+x + "\n" + y, duration);
+            //toast.show();
+        }
+
+        public void onProviderDisabled(String provider) { }
+
+        public void onProviderEnabled(String provider) { }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) { }
+    };
+
+	
 }
