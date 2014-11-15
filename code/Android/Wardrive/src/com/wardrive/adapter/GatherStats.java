@@ -28,7 +28,7 @@ public class GatherStats {
 		String networkOperatorId = tm.getNetworkOperator();
 		
 		String MCC = networkOperatorId.substring(0, Math.min(networkOperatorId.length(), 3));
-		String MNC = networkOperatorId.substring(networkOperatorId.length() - 3);
+		String MNC = networkOperatorId.substring(Math.min(networkOperatorId.length(), 3),networkOperatorId.length());
 		
 		current_stat.setNetwork_mcc(MCC);
 		current_stat.setNetwork_mnc(MNC);

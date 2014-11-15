@@ -15,9 +15,9 @@ public class StatsDataSource {
   private SQLiteDatabase database;
   private DBAdapter dbHelper;
   private String[] allColumns = { DBAdapter.STAT_ID,
-		  DBAdapter.IMEI,DBAdapter.SIM , DBAdapter.NETWORK_MCC ,DBAdapter.NETWORK_MCC,
-		  DBAdapter.NETWORK_NAME, DBAdapter.NETWORK_COUNTRY, DBAdapter.NETWORK_TYPE,
-		  DBAdapter.CELL_ID, DBAdapter.CELL_PSC, DBAdapter.CELL_LAC, DBAdapter.TIMESTAMP  };
+		  DBAdapter.IMEI, DBAdapter.IMSI , DBAdapter.PHONE_MODEL, DBAdapter.SIM , DBAdapter.NETWORK_MCC ,DBAdapter.NETWORK_MNC,
+		  DBAdapter.NETWORK_NAME, DBAdapter.NETWORK_COUNTRY, DBAdapter.NETWORK_TYPE,DBAdapter.GSM_TYPE,
+		  DBAdapter.CELL_ID, DBAdapter.CELL_PSC, DBAdapter.CELL_LAC,DBAdapter.RSSI,DBAdapter.GPS, DBAdapter.TIMESTAMP  };
 
   public StatsDataSource(Context context) {
     dbHelper = new DBAdapter(context);
@@ -34,15 +34,20 @@ public class StatsDataSource {
   public boolean saveStats(Stats curr_stats){
 	  ContentValues values = new ContentValues();
 	  values.put(DBAdapter.IMEI, curr_stats.getImei());
+	  values.put(DBAdapter.IMSI, curr_stats.getImsi());
+	  values.put(DBAdapter.PHONE_MODEL, curr_stats.getPhone_model());
 	  values.put(DBAdapter.SIM, curr_stats.getSimSN());
 	  values.put(DBAdapter.NETWORK_MCC, curr_stats.getNetwork_mcc());
 	  values.put(DBAdapter.NETWORK_MNC, curr_stats.getNetwork_mnc());
 	  values.put(DBAdapter.NETWORK_NAME, curr_stats.getNetwork_name());
 	  values.put(DBAdapter.NETWORK_COUNTRY, curr_stats.getNetwork_country());
 	  values.put(DBAdapter.NETWORK_TYPE, curr_stats.getNetwork_type());
+	  values.put(DBAdapter.GSM_TYPE, curr_stats.getGsm_type());
 	  values.put(DBAdapter.CELL_ID, curr_stats.getCellid());
 	  values.put(DBAdapter.CELL_PSC, curr_stats.getCellpsc());
 	  values.put(DBAdapter.CELL_LAC, curr_stats.getCelllac());
+	  values.put(DBAdapter.RSSI, curr_stats.getRssi());
+	  values.put(DBAdapter.GPS, curr_stats.getGps());
 	  values.put(DBAdapter.TIMESTAMP, curr_stats.getTimestamp());
 	  long insertId;
 	  try {

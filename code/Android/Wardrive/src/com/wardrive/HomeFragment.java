@@ -101,10 +101,16 @@ public class HomeFragment extends Fragment {
 			load_data(data,rootView);
 		 }
 		 public void onSignalStrengthsChanged(SignalStrength signalStrength){
-			 int rssi = -113 + 2 * signalStrength.getGsmSignalStrength();
-			 Stats data = GatherStats.gen_data(thiscontext);
-			 data.setRssi(String.valueOf(rssi));
-			 load_data(data,rootView);
+			
+			 try {
+				int rssi = -113 + 2 * signalStrength.getGsmSignalStrength();
+				 Stats data = GatherStats.gen_data(thiscontext);
+				 data.setRssi(String.valueOf(rssi));
+				 load_data(data,rootView);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			 
 		 }
 		 };
