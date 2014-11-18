@@ -1,0 +1,16 @@
+Setup Instructions for starting a new server
+
+Install Nginx:
+sudo apt-get install nginx
+sudo service start nginx
+
+Install Postgres
+sudo apt-get install postgresql postgresql-contrib
+
+Install pip
+http://pip.readthedocs.org/en/latest/installing.html
+
+Install Django and Virtualenv
+pip install virtualenvwrapper
+export WORKON_HOME=~/Envs
+source /usr/local/bin/virtualenvwrapper.sh
