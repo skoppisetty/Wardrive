@@ -14,3 +14,5 @@ Install Django and Virtualenv
 pip install virtualenvwrapper
 export WORKON_HOME=~/Envs
 source /usr/local/bin/virtualenvwrapper.sh
+mkvirtualenv wardrive
+workon wardrive
