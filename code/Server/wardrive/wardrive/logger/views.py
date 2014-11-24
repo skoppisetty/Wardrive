@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from models import Statistics
 from django.core import serializers
-import json,sys
+import json,sys,logging
 from django.views.decorators.csrf import csrf_exempt
+
+logger = logging.getLogger(__name__)
 
 def index(request):
     return HttpResponse("Project Home page use /save_data to save json logs")
@@ -13,6 +15,7 @@ def save_data(request):
 	result = { "error" : "", "status" : ""}
 	if request.method == 'POST':
 		if request.POST.get('stats', ''):
+			logger.error(request.POST['stats'])
 			try:
 				stats = json.loads(request.POST['stats'])
 				stats = Statistics(IMEI = stats['IMEI'],IMSI = stats['IMSI'],PHONE_MODEL = stats['PHONE_MODEL'],SIM_SN = stats['SIM_SN'],GSM_TYPE = stats['GSM_TYPE'],NETWORK_MCC = stats['NETWORK_MCC'],NETWORK_MNC = stats['NETWORK_MNC'],NETWORK_NAME = stats['NETWORK_NAME'],NETWORK_COUNTRY = stats['NETWORK_COUNTRY'],NETWORK_TYPE = stats['NETWORK_TYPE'],CELL_ID = stats['CELL_ID'],CELL_PSC = stats['CELL_PSC'],CELL_LAC = stats['CELL_LAC'],RSSI = stats['RSSI'],GPS = stats['GPS'],COLLECTED_TIME = stats['COLLECTED_TIME']) 
