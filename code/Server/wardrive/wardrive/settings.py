@@ -120,7 +120,7 @@ LOGGING = {
             'propagate': True,
             'level':'DEBUG',
         },
-        'wardrive': {
+        'logger': {
             'handlers': ['file'],
             'level': 'DEBUG',
         },
