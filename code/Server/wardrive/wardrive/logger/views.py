@@ -50,6 +50,9 @@ def save_data(request):
 		return HttpResponse(json.dumps(result), content_type="application/json")
 
 def read_data(request):
-	stats = Statistics.objects.order_by('-SAVED_TIME')[:5]
+	from django.db.models import Q
+	# stats = Statistics.objects.filter(MCCMNC_STATUS= False) | Statistics.objects.filter(OPENCELLID_STATUS= False)
+	stats = Statistics.objects.filter(CHECK_STATUS = True).filter(Q(MCCMNC_STATUS= False) | Q(OPENCELLID_STATUS = False))
+	# stats = Statistics.objects.filter('CHECK_STATUS' = True, MCCMNC_STATUS = False,  OPENCELLID_STATUS = False).order_by('-SAVED_TIME')
 	output = serializers.serialize('json', stats)
 	return HttpResponse(output, content_type="application/json")

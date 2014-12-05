@@ -119,8 +119,8 @@ def daemon():
 	while True:
 		# try:
 			stats_id = r.lpop("check_stats")
-			print "Checking for ", stats_id
 			if stats_id != None:
+				print "Checking for ", stats_id
 				cursor = dbconn.cursor()
 				cursor.execute("""
 					SELECT * FROM logger_statistics
