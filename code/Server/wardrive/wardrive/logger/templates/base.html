@@ -105,16 +105,16 @@ function share(){
 </script>
   <script>
 
-      function initialize() {
-        var mapCanvas = document.getElementById('map-canvas');
-        var mapOptions = {
-          center: new google.maps.LatLng(44.5403, -78.5463),
-          zoom: 8,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-        var map = new google.maps.Map(mapCanvas, mapOptions)
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
+      // function initialize() {
+      //   var mapCanvas = document.getElementById('map-canvas');
+      //   var mapOptions = {
+      //     center: new google.maps.LatLng(44.5403, -78.5463),
+      //     zoom: 8,
+      //     mapTypeId: google.maps.MapTypeId.ROADMAP
+      //   }
+      //   var map = new google.maps.Map(mapCanvas, mapOptions)
+      // }
+      // google.maps.event.addDomListener(window, 'load', initialize);
       function JSON_stringify(s, emit_unicode)
         {
            var json = JSON.stringify(s);
@@ -132,9 +132,49 @@ function uniq(a) {
     });
 }
 
+window.neighborhoods = [];
+var gainesville = new google.maps.LatLng(29.65,-82.34);
+
+            var markers = [];
+            var iterator = 0;
+
+            var map;
+
+            function initialize() {
+              var mapOptions = {
+                zoom: 12,
+                center: gainesville
+              };
+
+              map = new google.maps.Map(document.getElementById('map-canvas'),
+                      mapOptions);
+            }
+
+           
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+
+ function drop() {
+            console.log(window.neighborhoods);
+              for (var i = 0; i < window.neighborhoods.length; i++) {
+                setTimeout(function() {
+                  addMarker();
+                }, i * 200);
+              }
+            }
+
+            function addMarker() {
+              markers.push(new google.maps.Marker({
+                position: window.neighborhoods[iterator],
+                map: map,
+                draggable: false,
+                animation: google.maps.Animation.DROP
+              }));
+              iterator++;
+            }
       $( document ).ready(function() {
           console.log( "ready!" );
-          initialize();
+          // initialize();
           // $('#myTable').dataTable();
           var table = $('#myTable').DataTable();
             {% autoescape on %}
@@ -167,24 +207,22 @@ function uniq(a) {
             console.log(res);
             console.log(results.length);
             console.log(res.length);
+            
             for (var i = 0; i < res.length; i++) {
                 k = res[i]
                 var rowNode = table
                     .row.add( k )
                     .draw()
                     .node();
+                console.log(k[5][0],k[5][0]);
+                window.neighborhoods.push(new google.maps.LatLng(k[5][0],k[5][0]));
+                // var neighborhoods = [
+                //   new google.maps.LatLng(),
+                //   new google.maps.LatLng(52.549061, 13.422975),
+                //   new google.maps.LatLng(52.497622, 13.396110),
+                //   new google.maps.LatLng(52.517683, 13.394393)
+                // ];
             }
-
-          //           <tr>  
-          //   <td>{{stat.NETWORK_MCC}}</td>  
-          //   <td>{{stat.NETWORK_MNC}}</td>  
-          //   <td>{{stat.NETWORK_NAME}}</td>  
-          //   <td>{{stat.NETWORK_COUNTRY}}</td>  
-          //   <td>{{stat.CELL_ID}}</td> 
-          //   <td>{{stat.GPS}}</td>
-          //   <td>{{stat.OPENCELLID_LOG}}</td>
-          //   <td>{{stat.MCCMNC_LOG}}</td>
-          // </tr> 
 
         });
     </script>
