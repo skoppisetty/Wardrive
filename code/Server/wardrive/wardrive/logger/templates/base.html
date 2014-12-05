@@ -154,8 +154,8 @@ var gainesville = new google.maps.LatLng(29.65,-82.34);
 
             google.maps.event.addDomListener(window, 'load', initialize);
 
- function drop() {
-            console.log(window.neighborhoods);
+        function drop() {
+            // console.log(window.neighborhoods);
               for (var i = 0; i < window.neighborhoods.length; i++) {
                 setTimeout(function() {
                   addMarker();
@@ -214,8 +214,10 @@ var gainesville = new google.maps.LatLng(29.65,-82.34);
                     .row.add( k )
                     .draw()
                     .node();
-                console.log(k[5][0],k[5][0]);
-                window.neighborhoods.push(new google.maps.LatLng(k[5][0],k[5][0]));
+                console.log(k[5][0],k[5][1]);
+                if(k[5][0] != 0.00 && k[5][1] != 0.00){
+                window.neighborhoods.push(new google.maps.LatLng(k[5][0],k[5][1]));
+                }
                 // var neighborhoods = [
                 //   new google.maps.LatLng(),
                 //   new google.maps.LatLng(52.549061, 13.422975),
