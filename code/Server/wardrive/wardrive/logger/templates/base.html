@@ -125,6 +125,13 @@ function share(){
            );
         }
 
+function uniq(a) {
+    var seen = {};
+    return a.filter(function(item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+}
+
       $( document ).ready(function() {
           console.log( "ready!" );
           initialize();
@@ -134,23 +141,36 @@ function share(){
                 stats = {{ stats| safe }}
             {% endautoescape %}
           // console.log(stats.length);
+          results = [];
           for (var i = 0; i < stats.length; i++) {
                 k = stats[i]["fields"];
-                cell = jQuery.parseJSON((k["OPENCELLID_LOG"]));
-                mcc = jQuery.parseJSON( k["MCCMNC_LOG"] );
-                error = "Match"
-                if(mcc["errors"] == false){
-                    error = mcc["message"];
-                }
-                // console.log();
-                var rowNode = table
-                    .row.add( [ k["NETWORK_MCC"],k["NETWORK_MNC"], k["NETWORK_NAME"], k["NETWORK_COUNTRY"], k["CELL_ID"], k["GPS"], cell["error"] , error  ] )
-                    .draw()
-                    .node();
+                result = [k["NETWORK_MCC"],k["NETWORK_MNC"], k["NETWORK_NAME"], k["NETWORK_COUNTRY"], k["CELL_ID"], k["GPS"], k["OPENCELLID_LOG"] , k["MCCMNC_LOG"]]
+                results.push(result);
+                // cell = jQuery.parseJSON((k["OPENCELLID_LOG"]));
+                // mcc = jQuery.parseJSON( k["MCCMNC_LOG"] );
+                // error = "Match"
+                // if(mcc["errors"] == false){
+                //     error = mcc["message"];
+                // }
+                // // console.log();
+                // var rowNode = table
+                //     .row.add( [ k["NETWORK_MCC"],k["NETWORK_MNC"], k["NETWORK_NAME"], k["NETWORK_COUNTRY"], k["CELL_ID"], k["GPS"], k["OPENCELLID_LOG"] , k["MCCMNC_LOG"]  ] )
+                //     .draw()
+                //     .node();
                     // mcc["message"]cell["error"]
 
             }
-
+            res = uniq(results);
+            console.log(res);
+            console.log(results.length);
+            console.log(res.length);
+            for (var i = 0; i < res.length; i++) {
+                k = res[i]
+                var rowNode = table
+                    .row.add( k )
+                    .draw()
+                    .node();
+            }
 
           //           <tr>  
           //   <td>{{stat.NETWORK_MCC}}</td>  
