@@ -24,16 +24,24 @@ src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></scrip
             <th>ENO</th>  
             <th>EMPName</th>  
             <th>Country</th>  
+            <th>Salary</th> 
+            <th>Salary</th> 
+            <th>Salary</th> 
+            <th>Salary</th> 
             <th>Salary</th>  
           </tr>  
         </thead>  
         <tbody>  
-         {% for post in posts %}
+         {% for stat in stats %}
           <tr>  
-            <td>001</td>  
-            <td>Anusha</td>  
-            <td>India</td>  
-            <td>10000</td>  
+            <td>stat.NETWORK_MCC</td>  
+            <td>stat.NETWORK_MNC</td>  
+            <td>stat.NETWORK_NAME</td>  
+            <td>stat.NETWORK_COUNTRY</td>  
+            <td>stat.CELL_ID</td> 
+            <td>stat.GPS</td>
+            <td>stat.OPENCELLID_LOG</td>
+            <td>stat.MCCMNC_LOG</td>
           </tr>  
           {% endfor %}
         </tbody>  
