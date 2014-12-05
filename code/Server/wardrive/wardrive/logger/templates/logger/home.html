@@ -13,7 +13,7 @@ src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></scrip
 
  <script src="https://maps.googleapis.com/maps/api/js"></script>
 
-<div class="container" style="width:70%">
+<div class="container" style="width:80%">
 
     <div class="page-header">
        <h1>Faulty Towers</h1>
@@ -21,18 +21,20 @@ src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></scrip
     <table id="myTable">  
         <thead>  
           <tr>  
-            <th>ENO</th>  
-            <th>EMPName</th>  
-            <th>Country</th>  
-            <th>Salary</th> 
-            <th>Salary</th> 
-            <th>Salary</th> 
-            <th>Salary</th> 
-            <th>Salary</th>  
+            <th>MCC</th>  
+            <th>MNC</th>  
+            <th>Network Name</th>  
+            <th>Network Country</th> 
+            <th>Cell id</th> 
+            <th>GPS</th> 
+            <th>Opencellid log</th> 
+            <th>MCC MNC log</th>  
           </tr>  
         </thead>  
         <tbody>  
          {% for stat in stats %}
+		{% if "error" in stat.OPENCELLID_LOG %}
+		
           <tr>  
             <td>{{stat.NETWORK_MCC}}</td>  
             <td>{{stat.NETWORK_MNC}}</td>  
@@ -40,9 +42,10 @@ src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></scrip
             <td>{{stat.NETWORK_COUNTRY}}</td>  
             <td>{{stat.CELL_ID}}</td> 
             <td>{{stat.GPS}}</td>
-            <td>{{stat.OPENCELLID_LOG["error"]}}</td>
-            <td>{{stat.MCCMNC_LOG["message"]}}</td>
-          </tr>  
+            <td>{{stat.OPENCELLID_LOG}}</td>
+            <td>{{stat.MCCMNC_LOG}}</td>
+          </tr> 
+		{% endif %} 
           {% endfor %}
         </tbody>  
       </table> 
