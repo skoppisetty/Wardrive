@@ -145,8 +145,8 @@ function uniq(a) {
           for (var i = 0; i < stats.length; i++) {
                 k = stats[i]["fields"];
                 gps = k["GPS"].split(",")
-                gps = [ parseInt(gps[0]).toFixed(2),parseInt(gps[1]).toFixed(2) ]
-                console.log(parseInt(gps[0]).toFixed(2),parseInt(gps[1]).toFixed(2));
+                gps = [ parseFloat(gps[0]).toFixed(2),parseFloat(gps[1]).toFixed(2) ]
+                console.log(parseFloat(gps[0]).toFixed(2),parseFloat(gps[1]).toFixed(2));
                 result = [k["NETWORK_MCC"],k["NETWORK_MNC"], k["NETWORK_NAME"], k["NETWORK_COUNTRY"], k["CELL_ID"], gps, k["OPENCELLID_LOG"] , k["MCCMNC_LOG"]]
                 results.push(result);
                 // cell = jQuery.parseJSON((k["OPENCELLID_LOG"]));
