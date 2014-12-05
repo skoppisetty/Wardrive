@@ -19,3 +19,16 @@ class Statistics(models.Model):
     GPS = models.CharField(max_length=100)
     COLLECTED_TIME = models.CharField(max_length=100)
     SAVED_TIME = models.DateField(db_index=True, auto_now_add=True)
+    OPENCELLID_STATUS = models.BooleanField(default=False)
+    OPENCELLID_LOG = models.TextField(null=True)
+    MCCMNC_STATUS = models.BooleanField(default=False)
+    MCCMNC_LOG = models.TextField(null=True)
+    CHECK_STATUS = models.BooleanField(default=False)
+
+class MCC_MNC(models.Model):
+    NETWORK_MCC = models.CharField(max_length=100)
+    NETWORK_MNC = models.CharField(max_length=100)
+    NETWORK_ISO = models.CharField(max_length=100)
+    NETWORK_COUNTRY = models.CharField(max_length=100)
+    NETWORK_COUNTRYCODE = models.CharField(max_length=100)
+    NETWORK_NAME = models.CharField(max_length=100, null=True, blank=True)

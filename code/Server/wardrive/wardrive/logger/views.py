@@ -7,12 +7,19 @@ from django.views.decorators.csrf import csrf_exempt
 
 logger = logging.getLogger(__name__)
 
+import redis
+r = redis.StrictRedis(host='127.0.0.1', port=6379, db=5)
+
 def index(request):
-    return HttpResponse("Project Home page use /save_data to save json logs")
+	print "sample"
+	return HttpResponse("Project Home page use /save_data to save json logs")
 
 @csrf_exempt
 def save_data(request):
 	result = { "error" : "", "status" : ""}
+	print request.POST
+	for key, value in request.POST.iteritems():
+		print "1", key, value
 	if request.method == 'POST':
 		if request.POST.get('stats', ''):
 			logger.error(request.POST['stats'])
@@ -20,8 +27,13 @@ def save_data(request):
 				stats = json.loads(request.POST['stats'])
 				stats = Statistics(IMEI = stats['IMEI'],IMSI = stats['IMSI'],PHONE_MODEL = stats['PHONE_MODEL'],SIM_SN = stats['SIM_SN'],GSM_TYPE = stats['GSM_TYPE'],NETWORK_MCC = stats['NETWORK_MCC'],NETWORK_MNC = stats['NETWORK_MNC'],NETWORK_NAME = stats['NETWORK_NAME'],NETWORK_COUNTRY = stats['NETWORK_COUNTRY'],NETWORK_TYPE = stats['NETWORK_TYPE'],CELL_ID = stats['CELL_ID'],CELL_PSC = stats['CELL_PSC'],CELL_LAC = stats['CELL_LAC'],RSSI = stats['RSSI'],GPS = stats['GPS'],COLLECTED_TIME = stats['COLLECTED_TIME']) 
 				stats.save()
+				# print stats.id
 				result['status'] = 'True'
 				result['error'] = ""
+				try:
+					r.rpush("check_stats",stats.id)
+				except:
+					result['error'] = "unable to add it to check status queque"	
 				return HttpResponse(json.dumps(result), content_type="application/json")
 			except:
 				result['status'] = 'False'
