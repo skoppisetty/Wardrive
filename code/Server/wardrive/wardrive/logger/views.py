@@ -54,5 +54,5 @@ def read_data(request):
 	# stats = Statistics.objects.filter(MCCMNC_STATUS= False) | Statistics.objects.filter(OPENCELLID_STATUS= False)
 	stats = Statistics.objects.filter(CHECK_STATUS = True).filter(Q(MCCMNC_STATUS= False) | Q(OPENCELLID_STATUS = False))
 	# stats = Statistics.objects.filter('CHECK_STATUS' = True, MCCMNC_STATUS = False,  OPENCELLID_STATUS = False).order_by('-SAVED_TIME')
-	output = serializers.serialize('json', stats)
-	return HttpResponse(output, content_type="application/json")
+	# output = serializers.serialize('json', stats)
+	return render(request, 'logger/home.html', {'stats': stats})
