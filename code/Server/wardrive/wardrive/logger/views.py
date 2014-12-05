@@ -52,7 +52,7 @@ def save_data(request):
 def read_data(request):
 	from django.db.models import Q
 	# stats = Statistics.objects.filter(MCCMNC_STATUS= False) | Statistics.objects.filter(OPENCELLID_STATUS= False)
-	stats = Statistics.objects.filter(CHECK_STATUS = True).filter(Q(MCCMNC_STATUS= False) | Q(OPENCELLID_STATUS = False))
+	stats = Statistics.objects.filter(CHECK_STATUS = True).filter(Q(MCCMNC_STATUS= True) | Q(OPENCELLID_STATUS = False))
 	# stats = Statistics.objects.filter('CHECK_STATUS' = True, MCCMNC_STATUS = False,  OPENCELLID_STATUS = False).order_by('-SAVED_TIME')
 	# output = serializers.serialize('json', stats)
 	return render(request, 'logger/home.html', {'stats': stats})

@@ -40,8 +40,8 @@ src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></scrip
             <td>{{stat.NETWORK_COUNTRY}}</td>  
             <td>{{stat.CELL_ID}}</td> 
             <td>{{stat.GPS}}</td>
-            <td>{{stat.OPENCELLID_LOG}}</td>
-            <td>{{stat.MCCMNC_LOG}}</td>
+            <td>{{stat.OPENCELLID_LOG["error"]}}</td>
+            <td>{{stat.MCCMNC_LOG["message"]}}</td>
           </tr>  
           {% endfor %}
         </tbody>  
