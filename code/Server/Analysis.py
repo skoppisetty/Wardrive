@@ -42,7 +42,7 @@ def set_stats(stats,row):
 
 def check_MCC_MNC(stats,stats_id):
 	cur = dbconn.cursor()
-	result = {"error": True, "message" : []}
+	result = {'error': True, 'message' : []}
 	cur.execute("""SELECT * FROM logger_mcc_mnc WHERE "NETWORK_MCC" = %s AND "NETWORK_MNC" = %s """, (stats.MCC, stats.MNC))
 	# colnames = [desc[0] for desc in cur.description]
 	for each in cur:
@@ -53,7 +53,7 @@ def check_MCC_MNC(stats,stats_id):
 		elif stats.NETWORK_NAME.upper() != each[6].upper():
 			result['error'] = False
 			result['message'].append("Network name mismatch: Collected -" + stats.NETWORK_NAME + " Repository: " + each[6])
-	cur.execute("""UPDATE logger_statistics set "MCCMNC_STATUS" = %s , "MCCMNC_LOG" = %s where ID=%s""",(result["error"],str(result),stats_id))
+	cur.execute("""UPDATE logger_statistics set "MCCMNC_STATUS" = %s , "MCCMNC_LOG" = %s where ID=%s""",(result["error"],json.dumps(result),stats_id))
 	if cur.rowcount == 1:
 		print "saved MCCMNC_LOG stats to db"
 		return True
@@ -91,7 +91,7 @@ def check_opencellid(stats,stats_id):
 		else:
 			print "Success: ", result
 			status = True
-		curs.execute("""UPDATE logger_statistics set "OPENCELLID_STATUS" = %s , "OPENCELLID_LOG" = %s where ID=%s""",(status,str(result),stats_id))
+		curs.execute("""UPDATE logger_statistics set "OPENCELLID_STATUS" = %s , "OPENCELLID_LOG" = %s where ID=%s""",(status,json.dumps(result),stats_id))
 		if curs.rowcount == 1:
 			print "saved OPENCELLID_LOG stats to db"
 			return True

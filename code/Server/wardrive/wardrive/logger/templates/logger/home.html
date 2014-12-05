@@ -12,7 +12,9 @@ src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
 src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
  <script src="https://maps.googleapis.com/maps/api/js"></script>
-
+<script type="text/javascript" charset="utf-8">
+var stars = '{{ stats }}';
+</script>
 <div class="container" style="width:80%">
 
     <div class="page-header">
@@ -32,7 +34,7 @@ src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></scrip
           </tr>  
         </thead>  
         <tbody>  
-         {% for stat in stats %}
+<!--          {% for stat in stats %}
 		{% if "error" in stat.OPENCELLID_LOG %}
 		
           <tr>  
@@ -46,7 +48,7 @@ src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></scrip
             <td>{{stat.MCCMNC_LOG}}</td>
           </tr> 
 		{% endif %} 
-          {% endfor %}
+          {% endfor %} -->
         </tbody>  
       </table> 
 <div id="map-canvas" style="width: 500px;height: 400px;margin:20%"></div>
