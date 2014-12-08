@@ -93,6 +93,13 @@ public class StatsDataSource {
     database.delete(DBAdapter.TABLE_STATS, DBAdapter.STAT_ID
         + " = " + id, null);
   }
+  
+  public void deleteall() {
+	    
+	    System.out.println("Clearing all stats");
+	    database.delete(DBAdapter.TABLE_STATS, "1"
+	            + " = " + "1", null);
+	  }
 
   public List<Stats> getAllStats() {
     List<Stats> stats = new ArrayList<Stats>();

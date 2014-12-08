@@ -5,11 +5,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/btn_show_stats"
-        android:layout_width="wrap_content"
+  
+    
+     <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+          <Button
+        android:id="@+id/btn_show_stats"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+         android:layout_weight="0.5"
         android:text="@string/refresh_stats" />
+
+        <Button
+            android:id="@+id/btn_clear"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="Clear Logs" />
+    </LinearLayout>
+    
 
         <ScrollView
             android:id="@+id/scrollView1"

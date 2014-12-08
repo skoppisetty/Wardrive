@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.wardrive.adapter.GatherStats;
 import com.wardrive.adapter.Stats;
+import com.wardrive.adapter.StatsDataSource;
 
 import android.support.v4.app.Fragment;
 import android.content.Context;
@@ -42,6 +43,23 @@ public class Method1Fragment extends Fragment {
         	display_data(rootView);
         	
         }
+        
+        
+    });
+        
+        Button clearStats = (Button)rootView.findViewById(R.id.btn_clear);
+        clearStats.setOnClickListener(new View.OnClickListener() {
+        public void onClick(View arg0) {
+        	StatsDataSource datasource;
+    	    datasource = new StatsDataSource(thiscontext);
+    	    datasource.open(); 
+    	    datasource.deleteall();
+    	    datasource.close(); 
+        	display_data(rootView);
+        	
+        }
+        
+        
     });
     
     return rootView;
