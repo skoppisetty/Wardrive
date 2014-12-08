@@ -34,6 +34,7 @@ public class JSONDataClass {
 	private String TAG = JSONDataClass.class.getSimpleName();
 	private boolean success = false;
 	
+	// MANGANESE SERVER URL
 	public static final String SERVER_URL = "http://192.168.1.115:8000/save_data/";
 //	public static final String SERVER_URL = "http://manganese.cc.gatech.edu:51234/save_data/";
 

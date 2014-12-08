@@ -38,14 +38,19 @@ implements LocationListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 		
+		// GET THE CONTEXT
 		thiscontext = container.getContext();
 		ttm  = (TelephonyManager)getActivity().getSystemService(Context.TELEPHONY_SERVICE);
 		
 		final View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         
+		// BUTTON TO START THE DAEMON
 		Button start_saving = (Button)rootView.findViewById(R.id.btn_save);
+		
+		//BUTTON TO STOP THE DAEMON
 		Button stop_saving = (Button)rootView.findViewById(R.id.btn_stop);
-        //Listening to button event
+        
+		//Listening to button event - to start daemon
 		start_saving.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
             	Stats data = GatherStats.gen_data(thiscontext);
@@ -54,6 +59,8 @@ implements LocationListener
             	setdaemonstatus(rootView);
             }
         });
+		
+		//Listening to button event - to stop daemon
 		stop_saving.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
             	getActivity().stopService(new Intent(thiscontext, Savedbservice.class));
@@ -64,25 +71,31 @@ implements LocationListener
         
         return rootView;
     }
+	
+	/*
+	 * LOAD DATA ON THE SCREEN 
+	 */
 	private void load_data(Stats data, View rootView) {
 		// TODO Auto-generated method stub
-		TextView IMEI = (TextView)rootView.findViewById(R.id.IMEI_value);
-		TextView IMSI = (TextView)rootView.findViewById(R.id.IMSI_value);
-		TextView Phone_model = (TextView)rootView.findViewById(R.id.phonemodel_value);
-		TextView simSN = (TextView)rootView.findViewById(R.id.SIM_value);
-		TextView MNC = (TextView)rootView.findViewById(R.id.MNC_value);
-		TextView MCC = (TextView)rootView.findViewById(R.id.MCC_value);
-		TextView N_name = (TextView)rootView.findViewById(R.id.networkname_value);
-		TextView N_type = (TextView)rootView.findViewById(R.id.networktype_value);
-		TextView N_country = (TextView)rootView.findViewById(R.id.networkcountry_value);
-		TextView cellid = (TextView)rootView.findViewById(R.id.cellid_value);
-		TextView psc = (TextView)rootView.findViewById(R.id.psc_value);
-		TextView lac = (TextView)rootView.findViewById(R.id.lac_value);
-		TextView gps = (TextView)rootView.findViewById(R.id.gps_value);
-		TextView rssi = (TextView)rootView.findViewById(R.id.rssi_value);
-		TextView timestamp_view = (TextView)rootView.findViewById(R.id.timestamp_value);
+		TextView IMEI = (TextView)rootView.findViewById(R.id.IMEI_value);					// IMEI
+		TextView IMSI = (TextView)rootView.findViewById(R.id.IMSI_value);					// IMSI
+		TextView Phone_model = (TextView)rootView.findViewById(R.id.phonemodel_value);		// PHONE MODEL
+		TextView simSN = (TextView)rootView.findViewById(R.id.SIM_value);					// SIM NUMBER
+		TextView MNC = (TextView)rootView.findViewById(R.id.MNC_value);						// MNC
+		TextView MCC = (TextView)rootView.findViewById(R.id.MCC_value);						// MCC
+		TextView N_name = (TextView)rootView.findViewById(R.id.networkname_value);			// NETWORK OPERATOR NAME
+		TextView N_type = (TextView)rootView.findViewById(R.id.networktype_value);			// NETWORK TYPE
+		TextView N_country = (TextView)rootView.findViewById(R.id.networkcountry_value);	// NETWORK OPERTOR COUNTRY
+		TextView cellid = (TextView)rootView.findViewById(R.id.cellid_value);				// CELL ID
+		TextView psc = (TextView)rootView.findViewById(R.id.psc_value);						// PSC
+		TextView lac = (TextView)rootView.findViewById(R.id.lac_value);						// LAC
+		TextView gps = (TextView)rootView.findViewById(R.id.gps_value);						// USER LOCATION
+		TextView rssi = (TextView)rootView.findViewById(R.id.rssi_value);					// RSSI
+		TextView timestamp_view = (TextView)rootView.findViewById(R.id.timestamp_value);	// TIMESTAMP
 		
-		
+		/*
+		 * SET ALL THE OBJECT VARIABLES
+		 */
 		IMEI.setText(data.getImei());
 		IMSI.setText(data.getImsi());
 		Phone_model.setText(data.getPhone_model());
@@ -104,20 +117,35 @@ implements LocationListener
 		
 	}
 
-
+	/*
+	 * CONTAINS A LISTENER ON onCellLocationChanged
+	 * TRIGGER AN EVENT ONCE THE CELL LOCATION CHANGES AND FETCH NEW DATA FROM THE NETWORK
+	 */
 	private void phoneStateSetup(final View rootView){
 		 myPhoneStateListener = new PhoneStateListener() {
 		 public void onCellLocationChanged(CellLocation location){
 			Stats data = GatherStats.gen_data(thiscontext);
 			load_data(data,rootView);
 		 }
+		 
+		 /*
+		  * (non-Javadoc)
+		  * @see android.telephony.PhoneStateListener#onSignalStrengthsChanged(android.telephony.SignalStrength)
+		  * LISTENER ON SIGNAL STRENGTH CHANGE
+		  */
 		 public void onSignalStrengthsChanged(SignalStrength signalStrength){
 			
 			 try {
+				 
+				// GET LATEST RSSI VALUE 
 				int rssi = -113 + 2 * signalStrength.getGsmSignalStrength();
-				 Stats data = GatherStats.gen_data(thiscontext);
-				 data.setRssi(String.valueOf(rssi));
-				 load_data(data,rootView);
+				
+				// GET LATEST NETWORK DATA
+				Stats data = GatherStats.gen_data(thiscontext);
+				data.setRssi(String.valueOf(rssi));
+				
+				// DISPLAY DATA ON THE SCREEN
+				load_data(data,rootView);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -129,9 +157,13 @@ implements LocationListener
 		 try{
 		    ttm.listen(myPhoneStateListener, PhoneStateListener.LISTEN_CELL_LOCATION | PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
 		 }catch(Exception e){
-
+			 e.printStackTrace();
 		 }
 		}
+	
+	/*
+	 * DISPLAY THE DAEMON STAUS ON THE UI (SCREEN)
+	 */
 	private void setdaemonstatus(final View rootView){
 		TextView daemon = (TextView)rootView.findViewById(R.id.daemon_value);
 		if(GatherStats.isMyServiceRunning(thiscontext,Savedbservice.class)){
@@ -140,7 +172,6 @@ implements LocationListener
 		else{
 			daemon.setText("Not Running");
 		}
-		
 	}
 
 	
@@ -159,7 +190,10 @@ implements LocationListener
     //@Override
     public void onStatusChanged(String provider, int status, Bundle extras) { }
 
-    
+    /*
+     * GPS LOCATION LISTENER
+     * removeUpdates CALLED ON BOTH THE LOCATION LISTENERS
+     */
     public static LocationListener locationListenerGps = new LocationListener() {
         public void onLocationChanged(Location location) {
             //timer.cancel();
@@ -167,11 +201,6 @@ implements LocationListener
             //double y = location.getLongitude();
             lm.removeUpdates(this);
             lm.removeUpdates(locationListenerNetwork);
-
-            //Context context = getApplicationContext();
-            //int duration = Toast.LENGTH_SHORT;
-            //Toast toast = Toast.makeText(context, "gps enabled "+x + "\n" + y, duration);
-            //toast.show();
         }
 
         public void onProviderDisabled(String provider) { }
@@ -181,6 +210,10 @@ implements LocationListener
         public void onStatusChanged(String provider, int status, Bundle extras) { }
     };
 
+    /*
+     * NETWORK LOCATION LISTENER
+     * removeUpdates CALLED ON BOTH THE LOCATION LISTENERS
+     */
     public static LocationListener locationListenerNetwork = new LocationListener() {
         public void onLocationChanged(Location location) {
             //timer.cancel();
@@ -189,9 +222,6 @@ implements LocationListener
             lm.removeUpdates(this);
             lm.removeUpdates(locationListenerGps);
 
-            //int duration = Toast.LENGTH_SHORT;
-            //Toast toast = Toast.makeText(thiscontext, "network enabled"+x + "\n" + y, duration);
-            //toast.show();
         }
 
         public void onProviderDisabled(String provider) { }

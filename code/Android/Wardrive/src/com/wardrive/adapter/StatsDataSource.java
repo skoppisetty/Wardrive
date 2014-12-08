@@ -49,6 +49,7 @@ public class StatsDataSource {
 	  values.put(DBAdapter.RSSI, curr_stats.getRssi());
 	  values.put(DBAdapter.GPS, curr_stats.getGps());
 	  values.put(DBAdapter.TIMESTAMP, curr_stats.getTimestamp());
+	  values.put(DBAdapter.IS_SYNCED, 0);
 	  long insertId;
 	  try {
 		insertId = database.insert(DBAdapter.TABLE_STATS, null,

@@ -57,20 +57,20 @@ public class GatherStats {
 		  }
 		
 				
-		// Network Info
+		// NETWORK INFO
 		current_stat.setNetwork_country(tm.getNetworkCountryIso().toUpperCase());
 		current_stat.setNetwork_name(tm.getNetworkOperatorName());
 		current_stat.setNetwork_type(networkType(context));
 		String networkOperatorId = tm.getNetworkOperator();
 		
+		// MCC AND MNC
 		String MCC = networkOperatorId.substring(0, Math.min(networkOperatorId.length(), 3));
 		String MNC = networkOperatorId.substring(Math.min(networkOperatorId.length(), 3),networkOperatorId.length());
-		
 		current_stat.setNetwork_mcc(MCC);
 		current_stat.setNetwork_mnc(MNC);
 		current_stat.setGsm_type("test-hardcoded");
 		
-		// Cell tower info
+		// CELL TOWER INFO
 		GsmCellLocation CellLocation = (GsmCellLocation)tm.getCellLocation();
 		int cell_ID = CellLocation.getCid() & 0xffff;
         int cell_psc= CellLocation.getPsc();
@@ -79,15 +79,20 @@ public class GatherStats {
         current_stat.setCellpsc(String.valueOf(cell_psc));
         current_stat.setCelllac(String.valueOf(cell_lac));
         
-        // Location Info
+        // CURRENT LOCATION INFO
         getCurrentLocation();
         current_stat.setGps(Double.toString(x) + "," + Double.toString(y));
         
+        // CONVERT FROM UNIX TIME TO REAL TIME
         long unixTime = System.currentTimeMillis() / 1000L;
         current_stat.setTimestamp(String.valueOf(unixTime));
         return current_stat;
         
 	}
+	
+	/*
+	 * AVAILABLE NETWORK TYPES
+	 */
 	private static String networkType(Context context) {
 		 TelephonyManager teleMan = (TelephonyManager)
 				 context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -113,6 +118,7 @@ public class GatherStats {
 		    throw new RuntimeException("New type of network");
 	}
 	
+	// SAVE THE DATA TO THE LOCAL DATABASE
 	public static Boolean save_data(Context context, Stats data) {
 		// TODO Auto-generated method stub
 		StatsDataSource datasource;
@@ -146,6 +152,7 @@ public class GatherStats {
 			
 			//jsonObj.makeJsonArryReq();
 			
+			// CHECK IF THE JSON REQUEST WAS SENT SUCCESSFULLY
 			if (jsonObj.IsSuccess())
 				return true;
 			else
@@ -157,7 +164,9 @@ public class GatherStats {
 		}
 	}
 	
-	
+	/*
+	 * CHECK IF THE SERVICE IS RUNNING
+	 */
 	public static boolean isMyServiceRunning(Context context,Class<?> serviceClass) {
 	    ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -170,6 +179,10 @@ public class GatherStats {
 	
     
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+	
+	/*
+	 * CONVERT ASCII TO HEX
+	 */
 	public static String bytesToHex( byte[] bytes )
 	{
 	    char[] hexChars = new char[ bytes.length * 2 ];
@@ -182,7 +195,11 @@ public class GatherStats {
 	    return new String( hexChars );
 	}
     
-   public static String computeSHAHash(String password)
+	
+	/*
+	 * FUNCTION TO COMPUTE HASH USING SHA1
+	 */
+	public static String computeSHAHash(String password)
      {	 String SHAHash = null;
          MessageDigest mdSha1 = null;
            try
@@ -197,49 +214,55 @@ public class GatherStats {
                // TODO Auto-generated catch block
                e.printStackTrace();
            }
+           
            byte[] data = mdSha1.digest();
            SHAHash=bytesToHex(data);
            return SHAHash;
            
        }
     
+   /*
+    * HASHING FUNCTION
+    */
    public static String sha1(String s, String keyString) {
 
 	   String result = null;
 	   Mac mac = null;
-   SecretKeySpec key = null;
-   byte[] bytes = null;
-try {
-	key = new SecretKeySpec((keyString).getBytes("UTF-8"), "HmacSHA1");
-} catch (UnsupportedEncodingException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-}
+	   SecretKeySpec key = null;
+	   byte[] bytes = null;
+	   try {
+		   key = new SecretKeySpec((keyString).getBytes("UTF-8"), "HmacSHA1");
+	   } catch (UnsupportedEncodingException e) {
+		   // TODO Auto-generated catch block
+		   e.printStackTrace();
+	   }
 
-try {
-	mac = Mac.getInstance("HmacSHA1");
-} catch (NoSuchAlgorithmException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-}
-   try {
-	mac.init(key);
-} catch (InvalidKeyException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-}
+	   try {
+		   mac = Mac.getInstance("HmacSHA1");
+	   } catch (NoSuchAlgorithmException e) {
+		   // TODO Auto-generated catch block
+		   e.printStackTrace();
+	   }
+   
+	   try {
+		   mac.init(key);
+	   } catch (InvalidKeyException e) {
+		   // TODO Auto-generated catch block
+		   e.printStackTrace();
+	   }
 
-try {
-	bytes = mac.doFinal(s.getBytes("UTF-8"));
-} catch (IllegalStateException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-} catch (UnsupportedEncodingException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-}
-   result = bytesToHex(bytes);
-   return result;
+	   try {
+		   bytes = mac.doFinal(s.getBytes("UTF-8"));
+	   } catch (IllegalStateException e) {
+		   // TODO Auto-generated catch block
+		   e.printStackTrace();
+	   } catch (UnsupportedEncodingException e) {
+		   // TODO Auto-generated catch block
+		   e.printStackTrace();
+	   }
+	   
+	   result = bytesToHex(bytes);
+	   return result;
 }
 	
 //	private static String getADID(){
@@ -249,6 +272,9 @@ try {
 //		return AdId;
 //	}
 	
+   /*
+    * FORMAT THE OBJECT VARIABLES TO BE SENT IN THE JSON REQUEST TO THE SERVER
+    */
 	public static String toJSON(Stats data) {
 		  JSONObject object = new JSONObject();
 		  String key = "74c2e4d2b7";
@@ -280,6 +306,9 @@ try {
     
     /*
     *	LOCATION RELATED SUB-ROUTINES
+    *	GET THE TIMESTAMP OF THE LOCATIONS ACQUIRED BY BOTH THE GPS AND NETWORK PROVIDERS. USE THE LATEST ONE.
+    *	IF GPS IS NOT PRESENT, USE THE NETWORK PROVIDER
+    *	IF NETWORK IS NOT PRESENT, USE THE GPS PROVIDER
     */
     private static void getCurrentLocation() {
     	
@@ -332,6 +361,9 @@ try {
         
         }
     
+    /*
+     * CAPITALIZE THE INPUT STRING
+     */
     private static String Capitalize(String s)
     {
     	  if (s == null || s.length() == 0)

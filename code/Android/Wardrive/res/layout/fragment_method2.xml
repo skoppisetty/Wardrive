@@ -1,12 +1,96 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="#ffffff"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/btn_request"
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+         android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center" >
+            
+               
+    
+    <ImageView
+        android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btn_req" />
+        android:paddingBottom="30dp"
+        android:scaleType="center"
+        android:src="@drawable/logo" />
 
+
+
+    <TextView
+        android:id="@+id/credits_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Created By:"
+        android:textColor="#0021A5"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+    
+    <TextView
+        android:id="@+id/credits2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Sanil Sinai Borkar" />
+    
+    <TextView
+        android:id="@+id/credits1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Suresh Koppisetty" />
+
+
+    
+        <TextView
+            android:id="@+id/ack_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="40dp"
+            android:text="Special Thanks to"
+            android:textColor="#0021A5"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+    <TextView
+        android:id="@+id/ack1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Prof. Patrick Traynor" />
+    <TextView
+        android:id="@+id/ack4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Associate Professor, CISE, UFL" />
+    
+    <TextView
+        android:id="@+id/ack2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Bradley Reaves" />
+    <TextView
+        android:id="@+id/ack3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Georgia Institute of Technology" />
+            
+        </LinearLayout>
+    </ScrollView>
+ 
 </LinearLayout>

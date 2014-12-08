@@ -33,9 +33,9 @@ public class Method2Fragment extends Fragment implements OnClickListener {
 	private String TAG = Method2Fragment.class.getSimpleName();
 	private Button btnJsonObj;
 	//private TextView msgResponse;
+	
+	// THE MANGANESE SERVER URL
 	public static final String SERVER_URL = "http://104.236.14.26/";
-	//public static final String SERVER_URL = "http://www.google.com";
-	//public static final String SERVER_URL = "http://api.androidhive.info/volley/person_object.json";
 	
 	// These tags will be used to cancel the requests
 	private String tag_json_req = "json_req";
@@ -52,75 +52,9 @@ public class Method2Fragment extends Fragment implements OnClickListener {
         return rootView;
     }
 
-/*		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-			setContentView(R.layout.fragment_method2);
-
-			btnJsonObj = (Button) findViewById(R.id.btn_request);
-			//btnJsonArray = (Button) findViewById(R.id.btnJsonArray);
-			//msgResponse = (TextView) findViewById(R.id.msgResponse);
-
-			btnJsonObj.setOnClickListener(this);
-			//btnJsonArray.setOnClickListener(this);
-		}*/
-		
-
-		/**
-		 * Making JSON object request
-		 * */
-		private void makeJsonObjReq() {
-			
-			JsonObjectRequest jsonObjReq =
-					new JsonObjectRequest(Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
-
-						@Override
-						public void onResponse(JSONObject response) {
-							Log.e("LOG RESPONSE", response.toString());
-							//msgResponse.setText(response.toString());
-						}
-					}, new Response.ErrorListener() {
-
-						@Override
-						public void onErrorResponse(VolleyError error) {
-							Log.e("ERROR LOG", error.getMessage().toString());
-							VolleyLog.e("ERROR", error.getMessage());
-						}
-					}) {
-
-				/**
-				 * Passing some request headers
-				 * */
-				@Override
-				public Map<String, String> getHeaders() throws AuthFailureError {
-					HashMap<String, String> headers = new HashMap<String, String>();
-					headers.put("Content-Type", "application/json");
-					return headers;
-				}
-
-				//@Override
-				protected Map<String, String> getParams() {
-					Map<String, String> params = new HashMap<String, String>();
-					
-					params.put("name", "Androidhive");
-					params.put("email", "abc@androidhive.info");
-					params.put("pass", "password123");
-
-					return params;
-				}
-
-			};
-
-			// Adding request to request queue
-			AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_req);
-
-			// Cancelling request
-			// ApplicationController.getInstance().getRequestQueue().cancelAll(tag_json_obj);		
-		}
-
 		@Override
 		public void onClick(View v) {
-				makeJsonObjReq();
+				//makeJsonObjReq();
 			}
 
 	

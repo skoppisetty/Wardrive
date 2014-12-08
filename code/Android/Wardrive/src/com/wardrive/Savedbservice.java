@@ -31,6 +31,10 @@ public class Savedbservice extends Service {
 
     }
  
+	/*
+	 * (non-Javadoc)
+	 * @see android.app.Service#onStart(android.content.Intent, int)
+	 */
     @Override
     public void onStart(Intent intent, int startId) {
         Toast.makeText(this, "Logging Started", Toast.LENGTH_LONG).show();
@@ -39,6 +43,10 @@ public class Savedbservice extends Service {
           
     }
  
+    /*
+     * (non-Javadoc)
+     * @see android.app.Service#onDestroy()
+     */
     @Override
     public void onDestroy() {
         Toast.makeText(this, "Logging Stopped", Toast.LENGTH_LONG).show();
@@ -65,11 +73,12 @@ public class Savedbservice extends Service {
 			// PUSH DATA TO SERVER BEFORE SAVING IN THE LOCAL DB ON THE PHONE
 			status = GatherStats.PushToServer(context, data);
     		
-//        	if(status){
-//        		Toast.makeText(context, "Successfully saved to the database" , 
+        	if(!status){
+        		Log.e("SERVER_SAVE", "Error saving to the server"); 
 //        		Toast.LENGTH_LONG).show();
-//        	}
-//        	else{
+        	}
+
+        	//        	else{
 //        		Toast.makeText(context, "Failed to store to the database", 
 //        				   Toast.LENGTH_LONG).show();
 //        	}

@@ -11,10 +11,32 @@
         android:layout_height="wrap_content"
         android:text="@string/refresh_stats" />
 
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+                
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/log_table">
+    </TableLayout>
+    
+            </LinearLayout>
+        </ScrollView>
+        
+    
+    
     <ListView
         android:id="@+id/list_stats"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello" />
+    
 
 </LinearLayout>

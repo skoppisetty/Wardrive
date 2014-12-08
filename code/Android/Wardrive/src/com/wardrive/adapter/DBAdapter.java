@@ -9,30 +9,31 @@ import android.util.Log;
 
 public class DBAdapter extends SQLiteOpenHelper {
 
-	  
-  public static final String TABLE_STATS = "statistics";
-  public static final String STAT_ID = "STAT_ID";
-  public static final String IMEI = "IMEI";
-  public static final String IMSI = "IMSI";
-  public static final String PHONE_MODEL = "PHONE_MODEL";
-  public static final String SIM = "SIM_SN";
-  public static final String GSM_TYPE = "GSM_TYPE";
-  public static final String NETWORK_MCC = "NETWORK_MCC";
-  public static final String NETWORK_MNC = "NETWORK_MNC";
-  public static final String NETWORK_NAME = "NETWORK_NAME";
-  public static final String NETWORK_COUNTRY = "NETWORK_COUNTRY";
-  public static final String NETWORK_TYPE = "NETWORK_TYPE";
-  public static final String CELL_ID = "CELL_ID";
-  public static final String CELL_PSC = "CELL_PSC";
-  public static final String CELL_LAC = "CELL_LAC";
-  public static final String RSSI = "RSSI";
-  public static final String GPS = "GPS";
-  public static final String TIMESTAMP = "UNIX_TIMESTAMP";
+  // DATABASE TABLE COLUMNS STORED ON THE PHONE	
+  public static final String TABLE_STATS = "statistics";					// TABLE NAME
+  public static final String STAT_ID = "STAT_ID";							// AUTO-INCREMENTED UNIQUE ID (PRIMARY KEY)
+  public static final String IMEI = "IMEI";									// IMEI
+  public static final String IMSI = "IMSI";									// IMSI
+  public static final String PHONE_MODEL = "PHONE_MODEL";					// PHONE MODEL
+  public static final String SIM = "SIM_SN";								// SIM NUMBER
+  public static final String GSM_TYPE = "GSM_TYPE";							// GSM TYPE
+  public static final String NETWORK_MCC = "NETWORK_MCC";					// MCC
+  public static final String NETWORK_MNC = "NETWORK_MNC";					// MNC
+  public static final String NETWORK_NAME = "NETWORK_NAME";					// NETWORK OPERATOR NAME
+  public static final String NETWORK_COUNTRY = "NETWORK_COUNTRY";			// NETWORK OPERATOR COUNTRY
+  public static final String NETWORK_TYPE = "NETWORK_TYPE";					// NETWORK TYPE
+  public static final String CELL_ID = "CELL_ID";							// CELL ID
+  public static final String CELL_PSC = "CELL_PSC";							// CELL PSC
+  public static final String CELL_LAC = "CELL_LAC";							// CELL LAC
+  public static final String RSSI = "RSSI";									// RSSI
+  public static final String GPS = "GPS";									// USER LOCATION
+  public static final String TIMESTAMP = "UNIX_TIMESTAMP";					// TIMESTAMP (UNIX TIME)
+  public static final String IS_SYNCED = "IS_SYNCED";						// RECORD PUSHED TO THE SERVER?
   
-  private static final String DATABASE_NAME = "stats.db";
-  private static final int DATABASE_VERSION = 1;
+  private static final String DATABASE_NAME = "stats.db";					// DATABASE NAME
+  private static final int DATABASE_VERSION = 1;							// DATABASE VERSION
 
-  // Database creation sql statement
+  // Database creation SQL statement
   private static final String DATABASE_CREATE = "create table "
       + TABLE_STATS + "(" + STAT_ID
       + " integer primary key autoincrement, " + IMEI
@@ -51,12 +52,14 @@ public class DBAdapter extends SQLiteOpenHelper {
       + " text, " + RSSI
       + " text, " + GPS
       + " text, " + TIMESTAMP
-      + " text);";
+      + " text, " + IS_SYNCED
+      + " integer);";
 
+  // DATABASE ADAPTER
   public DBAdapter(Context context) {
 	  // for external
-	  super(context, context.getExternalFilesDir(null).getAbsolutePath() + "/" + DATABASE_NAME, null, DATABASE_VERSION);
-//	  super(context, DATABASE_NAME, null, DATABASE_VERSION);
+//	  super(context, context.getExternalFilesDir(null).getAbsolutePath() + "/" + DATABASE_NAME, null, DATABASE_VERSION);
+	  super(context, DATABASE_NAME, null, DATABASE_VERSION);
   }
 
   @Override
@@ -64,6 +67,11 @@ public class DBAdapter extends SQLiteOpenHelper {
     database.execSQL(DATABASE_CREATE);
   }
 
+  /*
+   * (non-Javadoc)
+   * @see android.database.sqlite.SQLiteOpenHelper#onUpgrade(android.database.sqlite.SQLiteDatabase, int, int)
+   * UPGRADING TO A NEW DATABASE VERSION
+   */
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     Log.w(DBAdapter.class.getName(),

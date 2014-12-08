@@ -24,7 +24,7 @@ ActionBar.TabListener {
 	    private TabsAdapter mAdapter;
 	    private ActionBar actionBar;
 	    // Tab titles
-	    private String[] tabs = { "Home", "Logs", "Method2" };
+	    private String[] tabs = { "Home", "Logs", "Credits" };
 	    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
