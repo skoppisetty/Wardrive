@@ -53,6 +53,10 @@ public class StatsDataSource {
 	  try {
 		insertId = database.insert(DBAdapter.TABLE_STATS, null,
 			        values);
+		
+		if (insertId > 0)
+			return true;
+		
 	  } catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -108,10 +112,25 @@ public class StatsDataSource {
 
   private Stats cursorToStat(Cursor cursor) {
 	  Stats stat_new = new Stats();
+	  
 	  stat_new.setId(cursor.getLong(0));
 	  stat_new.setImei(cursor.getString(1));
-	  stat_new.setNetwork_type(cursor.getString(2));
-	  stat_new.setCellid(cursor.getString(3));
-    return stat_new;
+	  stat_new.setImsi(cursor.getString(2));
+	  stat_new.setPhone_model(cursor.getString(3));
+	  stat_new.setSimSN(cursor.getString(4));
+	  stat_new.setGsm_type(cursor.getString(5));
+	  stat_new.setNetwork_mcc(cursor.getString(6));
+	  stat_new.setNetwork_mnc(cursor.getString(7));
+	  stat_new.setNetwork_name(cursor.getString(8));
+	  stat_new.setNetwork_country(cursor.getString(9));
+	  stat_new.setNetwork_type(cursor.getString(10));
+	  stat_new.setCellid(cursor.getString(11));
+	  stat_new.setCellpsc(cursor.getString(12));
+	  stat_new.setCelllac(cursor.getString(13));
+	  stat_new.setRssi(cursor.getString(14));
+	  stat_new.setGps(cursor.getString(15));
+	  stat_new.setTimestamp(cursor.getString(16));
+	  
+	  return stat_new;
   }
 } 

@@ -1,5 +1,14 @@
 package com.wardrive.adapter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.net.ParseException;
+import android.text.format.DateFormat;
+
 public class Stats {
 	  private long id;
 	  private String imei;
@@ -158,5 +167,31 @@ public class Stats {
 	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
+	
+	
+	
+	// CONVERT INTO A READABLE FORMAT
+	@Override
+	public String toString()
+	{
+		return getRealTime() + "\t" + "CID: " + getCellid() + "\t" + "LAC: " + getCelllac();
+	}
+	
+	public String getRealTime()
+	{
+		String strDate = "";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+            //Date date = sdf.parse(new java.util.Date((long)Long.valueOf(getTimestamp())*1000));
+            strDate = sdf.format(new java.util.Date((long)Long.valueOf(getTimestamp())*1000));
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+		finally {
+			return strDate;
+		}
+	}
+	
 		
 	} 

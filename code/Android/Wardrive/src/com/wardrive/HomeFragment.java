@@ -1,9 +1,12 @@
 package com.wardrive;
 
+import java.util.List;
+
 import com.wardrive.adapter.Stats;
 import com.wardrive.adapter.StatsDataSource;
 import com.wardrive.adapter.GatherStats;
 //import com.wardrive.adapter.Toast;
+
 
 import android.support.v4.app.Fragment;
 import android.telephony.CellLocation;
@@ -46,7 +49,7 @@ implements LocationListener
 		start_saving.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
             	Stats data = GatherStats.gen_data(thiscontext);
-            	load_data(data,rootView);
+            	load_data(data, rootView);
             	getActivity().startService(new Intent(thiscontext, Savedbservice.class));
             	setdaemonstatus(rootView);
             }
@@ -75,6 +78,7 @@ implements LocationListener
 		TextView cellid = (TextView)rootView.findViewById(R.id.cellid_value);
 		TextView psc = (TextView)rootView.findViewById(R.id.psc_value);
 		TextView lac = (TextView)rootView.findViewById(R.id.lac_value);
+		TextView gps = (TextView)rootView.findViewById(R.id.gps_value);
 		TextView rssi = (TextView)rootView.findViewById(R.id.rssi_value);
 		TextView timestamp_view = (TextView)rootView.findViewById(R.id.timestamp_value);
 		
@@ -88,6 +92,7 @@ implements LocationListener
 		N_name.setText(data.getNetwork_name());
 		N_type.setText(data.getNetwork_type());
 		N_country.setText(data.getNetwork_country());
+		gps.setText(data.getGps());
 		cellid.setText(data.getCellid());
 		psc.setText(data.getCellpsc());
 		lac.setText(data.getCelllac());
@@ -95,7 +100,7 @@ implements LocationListener
 			rssi.setText(data.getRssi()+"db");
 		}
 		setdaemonstatus(rootView);
-		timestamp_view.setText(data.getTimestamp());
+		timestamp_view.setText(data.getRealTime().toString());
 		
 	}
 

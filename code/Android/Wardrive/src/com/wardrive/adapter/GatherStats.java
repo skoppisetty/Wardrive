@@ -1,6 +1,21 @@
 package com.wardrive.adapter;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.wardrive.HomeFragment;
+import com.wardrive.app.JSONDataClass;
+
 import android.os.Build;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -8,8 +23,11 @@ import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
+import android.util.Base64;
+import android.util.Log;
 
 
 public class GatherStats {
@@ -37,7 +55,6 @@ public class GatherStats {
 		  } else {
 			  current_stat.setPhone_model(Capitalize(phoneManufacturer) + " " + phoneModel); 
 		  }
-		
 		
 				
 		// Network Info
@@ -105,6 +122,42 @@ public class GatherStats {
 	    datasource.close(); 
 	    return status;
 	}
+	
+	
+	// GETS THE LOGGED DATA TO DISPLAY ON THE 2ND TAB
+	public static List<Stats> get_data(Context context) {
+		// TODO Auto-generated method stub
+		StatsDataSource datasource;
+	    datasource = new StatsDataSource(context);
+	    datasource.open(); 
+	    List<Stats> statsList = datasource.getAllStats();
+	    datasource.close(); 
+	    return statsList;
+	}
+	
+	
+	// PUSH THE DATA TO THE SERVER USING VOLLEY
+	public static boolean PushToServer(Context context, Stats data) {
+		// TODO Auto-generated method stub
+		try {
+			JSONDataClass jsonObj = new JSONDataClass();
+//			jsonObj.makeJsonObjReq(data);
+			jsonObj.makeStringReq(data);
+			
+			//jsonObj.makeJsonArryReq();
+			
+			if (jsonObj.IsSuccess())
+				return true;
+			else
+				return false;
+		}
+		catch (Exception e) {
+			Log.e("PushToServer", e.getMessage().toString());
+			return false;
+		}
+	}
+	
+	
 	public static boolean isMyServiceRunning(Context context,Class<?> serviceClass) {
 	    ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -116,6 +169,114 @@ public class GatherStats {
 	}
 	
     
+	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+	public static String bytesToHex( byte[] bytes )
+	{
+	    char[] hexChars = new char[ bytes.length * 2 ];
+	    for( int j = 0; j < bytes.length; j++ )
+	    {
+	        int v = bytes[ j ] & 0xFF;
+	        hexChars[ j * 2 ] = hexArray[ v >>> 4 ];
+	        hexChars[ j * 2 + 1 ] = hexArray[ v & 0x0F ];
+	    }
+	    return new String( hexChars );
+	}
+    
+   public static String computeSHAHash(String password)
+     {	 String SHAHash = null;
+         MessageDigest mdSha1 = null;
+           try
+           {
+             mdSha1 = MessageDigest.getInstance("SHA-1");
+           } catch (NoSuchAlgorithmException e1) {
+             Log.e("myapp", "Error initializing SHA1 message digest");
+           }
+           try {
+               mdSha1.update(password.getBytes("ASCII"));
+           } catch (UnsupportedEncodingException e) {
+               // TODO Auto-generated catch block
+               e.printStackTrace();
+           }
+           byte[] data = mdSha1.digest();
+           SHAHash=bytesToHex(data);
+           return SHAHash;
+           
+       }
+    
+   public static String sha1(String s, String keyString) {
+
+	   String result = null;
+	   Mac mac = null;
+   SecretKeySpec key = null;
+   byte[] bytes = null;
+try {
+	key = new SecretKeySpec((keyString).getBytes("UTF-8"), "HmacSHA1");
+} catch (UnsupportedEncodingException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
+
+try {
+	mac = Mac.getInstance("HmacSHA1");
+} catch (NoSuchAlgorithmException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
+   try {
+	mac.init(key);
+} catch (InvalidKeyException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
+
+try {
+	bytes = mac.doFinal(s.getBytes("UTF-8"));
+} catch (IllegalStateException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+} catch (UnsupportedEncodingException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
+   result = bytesToHex(bytes);
+   return result;
+}
+	
+//	private static String getADID(){
+//		Info adInfo = null;
+//		adInfo = AdvertisingIdClient.getAdvertisingIdInfo(mContext);
+//		String AdId = adInfo.getId();
+//		return AdId;
+//	}
+	
+	public static String toJSON(Stats data) {
+		  JSONObject object = new JSONObject();
+		  String key = "74c2e4d2b7";
+		  try {
+		    object.put("IMEI", sha1(data.getImei(),key));
+		    object.put("IMSI",sha1(data.getImsi(),key) );
+		    object.put("PHONE_MODEL",data.getPhone_model() );
+		    object.put("SIM_SN",sha1(data.getSimSN(),key) );
+		    object.put("NETWORK_MNC",data.getNetwork_mnc() );
+		    object.put("NETWORK_MCC",data.getNetwork_mcc() );
+		    object.put("NETWORK_NAME",data.getNetwork_name() );
+		    object.put("NETWORK_TYPE",data.getNetwork_type() );
+		    object.put("NETWORK_COUNTRY",data.getNetwork_country() );
+		    object.put("GSM_TYPE",data.getGsm_type() );
+		    object.put("CELL_ID",data.getCellid() );
+		    object.put("CELL_PSC",data.getCellpsc() );
+		    object.put("CELL_LAC",data.getCelllac() );
+		    object.put("RSSI",data.getRssi() );
+		    object.put("GPS",data.getGps() );
+		    object.put("COLLECTED_TIME",data.getTimestamp() );
+//		    object.put("ADID",getADID());
+		    
+		  } catch (JSONException e) {
+		    e.printStackTrace();
+		  }
+		  System.out.println(object);
+		  return object.toString();
+		} 
     
     /*
     *	LOCATION RELATED SUB-ROUTINES
@@ -171,16 +332,16 @@ public class GatherStats {
         
         }
     
-    	private static String Capitalize(String s) {
-    	  if (s == null || s.length() == 0) {
+    private static String Capitalize(String s)
+    {
+    	  if (s == null || s.length() == 0)
     	    return "";
-    	  }
+    	  
     	  char first = s.charAt(0);
-    	  if (Character.isUpperCase(first)) {
+    	  if (Character.isUpperCase(first))
     	    return s;
-    	  } else {
+    	  else
     	    return Character.toUpperCase(first) + s.substring(1);
-    	  }
-    	}
+    }    	
 
 }

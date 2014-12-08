@@ -33,7 +33,7 @@ public class Savedbservice extends Service {
  
     @Override
     public void onStart(Intent intent, int startId) {
-        Toast.makeText(this, "Daemon Started", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Logging Started", Toast.LENGTH_LONG).show();
         phoneStateSetup(this);
     	
           
@@ -41,7 +41,7 @@ public class Savedbservice extends Service {
  
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "Daemon Stopped", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Logging Stopped", Toast.LENGTH_LONG).show();
         try{
         	 if(myPhoneStateListener != null){ttm.listen(myPhoneStateListener, PhoneStateListener.LISTEN_NONE);}
         	}catch(Exception e){
@@ -59,15 +59,20 @@ public class Savedbservice extends Service {
 		 public void onCellLocationChanged(CellLocation location){
 			Stats data = GatherStats.gen_data(context);
 			data.setRssi(String.valueOf(latest_rssi));
+			
 			Boolean status = GatherStats.save_data(context,data);
-        	if(status){
-        		Toast.makeText(context, "Successfully saved to database" , 
-        				   Toast.LENGTH_LONG).show();
-        	}
-        	else{
-        		Toast.makeText(context, "Failed to store to database", 
-        				   Toast.LENGTH_LONG).show();
-        	}
+			
+			// PUSH DATA TO SERVER BEFORE SAVING IN THE LOCAL DB ON THE PHONE
+			status = GatherStats.PushToServer(context, data);
+    		
+//        	if(status){
+//        		Toast.makeText(context, "Successfully saved to the database" , 
+//        		Toast.LENGTH_LONG).show();
+//        	}
+//        	else{
+//        		Toast.makeText(context, "Failed to store to the database", 
+//        				   Toast.LENGTH_LONG).show();
+//        	}
 		 }
 		 public void onSignalStrengthsChanged(SignalStrength signalStrength ){
 			 latest_rssi = -113 + 2 * signalStrength.getGsmSignalStrength();

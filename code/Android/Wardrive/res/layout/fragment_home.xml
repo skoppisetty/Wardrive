@@ -286,7 +286,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="Start Daemon" />
+            android:text="Start Logging" />
 
         <Button
             android:id="@+id/btn_stop"
@@ -294,7 +294,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="Stop Daemon" />
+            android:text="Stop Logging" />
     </LinearLayout>
 
         <LinearLayout
@@ -305,7 +305,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="Daemon Status" />
+            android:text="Logging Status" />
         <TextView
             android:id="@+id/daemon_value"
             android:layout_width="0dp"
