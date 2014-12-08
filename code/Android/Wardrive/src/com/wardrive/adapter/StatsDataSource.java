@@ -119,12 +119,13 @@ public class StatsDataSource {
 	  stat_new.setImsi(cursor.getString(2));
 	  stat_new.setPhone_model(cursor.getString(3));
 	  stat_new.setSimSN(cursor.getString(4));
-	  stat_new.setGsm_type(cursor.getString(5));
-	  stat_new.setNetwork_mcc(cursor.getString(6));
-	  stat_new.setNetwork_mnc(cursor.getString(7));
-	  stat_new.setNetwork_name(cursor.getString(8));
-	  stat_new.setNetwork_country(cursor.getString(9));
-	  stat_new.setNetwork_type(cursor.getString(10));
+
+	  stat_new.setNetwork_mcc(cursor.getString(5));
+	  stat_new.setNetwork_mnc(cursor.getString(6));
+	  stat_new.setNetwork_name(cursor.getString(7));
+	  stat_new.setNetwork_country(cursor.getString(8));
+	  stat_new.setNetwork_type(cursor.getString(9));
+	  stat_new.setGsm_type(cursor.getString(10));
 	  stat_new.setCellid(cursor.getString(11));
 	  stat_new.setCellpsc(cursor.getString(12));
 	  stat_new.setCelllac(cursor.getString(13));
