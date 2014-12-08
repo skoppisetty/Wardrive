@@ -1,12 +1,30 @@
 Setup Instructions for starting a new server
+----------------------------------------
 
 Install Nginx:
+-------------------------
 sudo apt-get install nginx
 sudo service start nginx
 
+nginx config and uwsgi parameters for the application are given in the code repository. Make sure you link them to nginx.
+
+
 Install Postgres
+-------------------------
 sudo apt-get install postgresql postgresql-contrib
 
+Install Redis
+-------------------------
+sudo apt-get install redis-server
+
+
+Django - the right way:
+-------------------------
+Use this link for installing django the right way
+http://www.jeffknupp.com/blog/2013/12/18/starting-a-django-16-project-the-right-way/
+
+Gist of the above article:
+-------------------------
 Install pip
 http://pip.readthedocs.org/en/latest/installing.html
 
@@ -22,5 +40,23 @@ Restart terminal
 mkvirtualenv wardrive
 workon wardrive
 
+Once you are done with this basic setup , and run the following command to install all the requirements for the project. Make sure that you are already in the virtualenv created previously ("wardrive") and linking the correct requirements.txt file.
 
 pip install -t requirements.txt
+
+--------------------------------------------------
+
+
+
+--------------------------------------------------
+Starting the server
+--------------------------------------------------
+Start Redis server
+sudo service start redis-server
+
+Start django using the uwsgi config file.
+uwsgi --ini wardrive_uwsgi.ini
+
+Start the analysis script as a daemon
+python Analysis.py daemon
+
