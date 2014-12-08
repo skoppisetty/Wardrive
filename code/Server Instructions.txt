@@ -60,3 +60,12 @@ uwsgi --ini wardrive_uwsgi.ini
 Start the analysis script as a daemon
 python Analysis.py daemon
 
+----------------------------
+
+Django currently supports 3 pages.
+
+1. / - just shows the url for save data. No need in production scenarios
+2. /save_data - This url is used to store the data into the postgres server
+3. /read_data - To display analysed data - only for demo purposes, Needs to be disabled in the production environment. This shows all the live data received and analysed. Near real-time.
+
+ Changes can be made to the views.py file in the logger folder. Url changes needs to be done in the urls.py file.
