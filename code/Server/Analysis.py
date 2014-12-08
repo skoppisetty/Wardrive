@@ -41,6 +41,8 @@ def set_stats(stats,row):
 
 
 def check_MCC_MNC(stats,stats_id):
+	# this checks the MCC MNC combo with the records from mcc-mnc.com
+	# the records at mcc-mnc.com are fetched and stored in database to improve speed
 	cur = dbconn.cursor()
 	result = {'error': True, 'message' : []}
 	cur.execute("""SELECT * FROM logger_mcc_mnc WHERE "NETWORK_MCC" = %s AND "NETWORK_MNC" = %s """, (stats.MCC, stats.MNC))
@@ -64,19 +66,16 @@ def check_MCC_MNC(stats,stats_id):
 	print "Done checking"
 	return False
 
-    # OPENCELLID_STATUS = models.BooleanField(default=False)
-    # OPENCELLID_LOG = models.TextField()
-    # MCCMNC_STATUS = models.BooleanField(default=False)
-    # MCCMNC_LOG = models.TextField()
-    # CHECK_STATUS = models.BooleanField(default=False)
-
 def gen_api_url(stats):
+	# opencellid key is given here
+	# Uses api of opencellid.org - to find the presence of the cell tower
 	api_key = '1bf30105-4514-466b-b854-c7ba5cdcf85b'
 	base_url = 'http://opencellid.org/cell/get?key='
 	url = base_url + api_key + "&mcc=" + stats.MCC + "&mnc=" + stats.MNC + "&lac=" + stats.LAC +  "&cellid=" + stats.CELLID
 	return url + "&format=json"
 
 def check_opencellid(stats,stats_id):
+	# This function is used to check the record with opencellid.org
 	curs = dbconn.cursor()
 	# url = 'http://opencellid.org/cell/get?key=1bf30105-4514-466b-b854-c7ba5cdcf85b&mcc=2602&mnc=2&lac=10250&cellid=26511&format=json'
 	# url = 'http://opencellid.org/cell/get?key=1bf30105-4514-466b-b854-c7ba5cdcf85b&mcc=260&mnc=2&lac=10250&cellid=265&format=json'
@@ -104,6 +103,7 @@ def check_opencellid(stats,stats_id):
 
 
 def save_state(mccmnc,opencellid, stats_id):
+	# once both checks are done we store it to db
 	curs = dbconn.cursor()
 	if mccmnc == True and opencellid == True:
 		status = True
@@ -116,6 +116,10 @@ def save_state(mccmnc,opencellid, stats_id):
 
 
 def daemon():
+	# This mode waits for the new data.
+	# django pushes the id of new entry to redis
+	# This script reads it and processes the data
+	# Efficient way - as its non blocking
 	while True:
 		# try:
 			stats_id = r.lpop("check_stats")
@@ -136,6 +140,7 @@ def daemon():
 			time.sleep(3)
 
 def sync():
+	# connects to server and checks for every record
 	cursor = dbconn.cursor()
 	cursor.execute("""
 					SELECT * FROM logger_statistics;""")
@@ -157,5 +162,8 @@ if __name__ == "__main__":
 		exit(1)
 	if argv[1] == "daemon":
 		daemon()
+		# starting the daemon mode.This waits for the new data
 	else:
-		sync()
+		sync() 
+		# This mode reads all the entries in the database and checks their 
+		# authenticity of cellphone tower

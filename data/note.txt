@@ -1,0 +1,2 @@
+All the logs collected are pushed to server at manganese.cc.gatech.edu
+Remote login to the database is disabled for security purposes. You have to login to the server to access the data.
