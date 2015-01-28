@@ -10,7 +10,7 @@ import requests, json
 from sys import argv
 
 r = redis.StrictRedis(host='127.0.0.1', port=6379, db=5)
-dbconn = psycopg2.connect(database='wardrive',host='localhost',port='5432',user='wardrive',password='Md3YqGEJ396Q')
+dbconn = psycopg2.connect(database='wardrive',host='localhost',port='5432',user='wardrive',password='sample')
 
 
 
@@ -69,7 +69,7 @@ def check_MCC_MNC(stats,stats_id):
 def gen_api_url(stats):
 	# opencellid key is given here
 	# Uses api of opencellid.org - to find the presence of the cell tower
-	api_key = '1bf30105-4514-466b-b854-c7ba5cdcf85b'
+	api_key = 'Keep your api key here'
 	base_url = 'http://opencellid.org/cell/get?key='
 	url = base_url + api_key + "&mcc=" + stats.MCC + "&mnc=" + stats.MNC + "&lac=" + stats.LAC +  "&cellid=" + stats.CELLID
 	return url + "&format=json"
