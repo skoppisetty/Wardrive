@@ -35,8 +35,7 @@ public class JSONDataClass {
 	private boolean success = false;
 	
 	// MANGANESE SERVER URL
-//	public static final String SERVER_URL = "http://192.168.1.115:8000/save_data/";
-	public static final String SERVER_URL = "http://manganese.cc.gatech.edu:51234/save_data/";
+	public static final String SERVER_URL = "http://192.168.1.115:8000/save_data/";
 
 	// These tags will be used to cancel the requests
 	private static String tag_json_req = "json_req";
